@@ -39,10 +39,6 @@ class Parents
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'parent')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Employee $employee = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -116,18 +112,6 @@ class Parents
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getEmployee(): ?Employee
-    {
-        return $this->employee;
-    }
-
-    public function setEmployee(?Employee $employee): self
-    {
-        $this->employee = $employee;
 
         return $this;
     }
