@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les annonces{% endblock %}
+{% block title %}Les services{% endblock %}
 
 {% block body %}
 <style>
@@ -16,20 +16,27 @@
             </div>
         </div>
     {% endfor %}
-<h1 class="text-center">Les annonces</h1>
-<div class="row mt-4">
-{% for annonce in annonces %}
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img src="{{ asset('uploads/brochures/'~ annonce.image) }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h4>{{ annonce.titre }}</h4>
-                <p class="card-text">{{annonce.description}}</p>
-            </div>
-        </div>
-    </div>
+        <a class="text-decoration-none" href="{{ path('app_service') }}">Retour</a>
+        <h1 class="text-center">Les services</h1>
+<table class="table table-dark">
+    <thead>
+        <tr>        
+            <th>#</th>
+            <th>Services</th>
+            <th>Prix</th>
+        </tr>
+    </thead>
+{% for service in services %}
+    <tbody>
+        <tr> 
+            <td>{{service.id}}</td>
+            <td>{{service.name}}</td>
+            <td>{{service.prix}}</td>
+        </tr>
+    </tbody>
 {% endfor %}
-</div>
+</table>
+
 
 </div>
 {% endblock %}

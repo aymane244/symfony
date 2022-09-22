@@ -16,20 +16,25 @@
             </div>
         </div>
     {% endfor %}
-<h1 class="text-center">Les annonces</h1>
-<div class="row mt-4">
-{% for annonce in annonces %}
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img src="{{ asset('uploads/brochures/'~ annonce.image) }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h4>{{ annonce.titre }}</h4>
-                <p class="card-text">{{annonce.description}}</p>
-            </div>
-        </div>
-    </div>
+        <a class="text-decoration-none" href="{{ path('app_annee') }}">Retour</a>
+        <h1 class="text-center">Année scolaire</h1>
+<table class="table table-dark">
+    <thead>
+        <tr>        
+            <th>#</th>
+            <th>Année Scolaire</th>
+        </tr>
+    </thead>
+{% for annee in annees %}
+    <tbody>
+        <tr> 
+            <td>{{annee.id}}</td>
+            <td>{{annee.annee|date("Y")}}/{{date|date("Y")}}</td>
+        </tr>
+    </tbody>
 {% endfor %}
-</div>
+</table>
+
 
 </div>
 {% endblock %}

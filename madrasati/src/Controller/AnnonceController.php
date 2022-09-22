@@ -13,16 +13,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class AnnonceController extends AbstractController
 {
     #[Route('/annonce', name: 'app_annonce')]
     public function index(Request $request, ManagerRegistry $doctrine): Response{
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
         $entityManager = $doctrine->getManager();
         $slugger = new AsciiSlugger();
         $annonce = new Annonce();
@@ -81,17 +80,23 @@ class AnnonceController extends AbstractController
             $entityManager->flush();       
             $this->addFlash('success', 'Annonce ajouter avec Succès');
         }
+        $user = $this->getUser();
         return $this->renderForm('annonce/index.html.twig', [
             'controller_name' => 'app_annonce',
-            'form' => $form
+            'form' => $form,
+            'user' => $user
         ]);
     }
     #[Route('/annonce/show', name: 'show_annonce')]
     public function show(ManagerRegistry $doctrine): Response{
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
         $annonces = $doctrine->getRepository(Annonce:: class)->findAll();
         // dd($annonces);
         // dd($annonce);
-        return $this->render('annonce/show.html.twig', ['annonces' => $annonces]);
+        return $this->render('annonce/show.html.twig', [
+            'annonces' => $annonces,
+            'user' => $user
+        ]);
     }
 }
