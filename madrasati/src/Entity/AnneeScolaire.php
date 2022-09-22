@@ -33,4 +33,8 @@ class AnneeScolaire
 
         return $this;
     }
+    public function __toString()
+    {
+        return  $this->annee->format('Y-m-d');
+    }
 }

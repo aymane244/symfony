@@ -177,6 +177,6 @@ class Eleve
     }
     public function __toString()
     {
-        return  $this->getAnneeScolaire();
+        return  $this->anneeScolaire;
     }
 }

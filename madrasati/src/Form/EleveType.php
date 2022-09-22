@@ -7,6 +7,7 @@ use App\Entity\Niveau;
 use App\Entity\Parents;
 use App\Entity\Services;
 use App\Entity\AnneeScolaire;
+use DateTimeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,9 @@ class EleveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $annee = new AnneeScolaire();
+        $annee->getAnnee();
+        // DateTimeInterface::format();
         $builder
             ->add('fullname')
             ->add('dateNaissance')
@@ -42,7 +46,7 @@ class EleveType extends AbstractType
                 'placeholder' => '-- Veuillez choisir un parent --',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez choisir une association'
+                        'message' => 'Veuillez choisir un parent'
                     ])
                 ]
             ])
@@ -54,7 +58,7 @@ class EleveType extends AbstractType
                 'placeholder' => '-- Veuillez choisir un niveau --',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez choisir une association'
+                        'message' => 'Veuillez choisir un niveau'
                     ])
                 ]
             ])
@@ -62,11 +66,16 @@ class EleveType extends AbstractType
                 'required' =>true,
                 'label' =>'Choisir une année scolaire',
                 'class' => AnneeScolaire::class,
-                'choice_label' =>'id',
+                'query_builder' => function (EntityRepository $repo) {
+                    return $repo->createQueryBuilder('a')
+                    ->andWhere('a.annee = :annee')
+                    ->setParameter('annee', date("Y"));
+                },
+                'choice_label' =>'annee',
                 'placeholder' => '-- Veuillez choisir une année scolaire --',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez choisir une association'
+                        'message' => 'Veuillez choisir une année scolaire'
                     ])
                 ]
             ])
@@ -82,10 +91,6 @@ class EleveType extends AbstractType
                 'expanded' => false,
                 'placeholder' =>'--Choisir un service--',
                 'mapped' => false,
-                'attr' =>['data-placeholder' => 'choisir un service'],
-                'constraints' => [
-                    new \Symfony\Component\Validator\Constraints\Count(['min' => 1, 'minMessage' => 'Please select one service'])
-                ]
             ]);
         ;
     }
