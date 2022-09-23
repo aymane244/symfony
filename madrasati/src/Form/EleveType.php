@@ -14,21 +14,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EleveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $annee = new AnneeScolaire();
-        $annee->getAnnee();
+        $annee->setAnnee(new \DateTime(date("d-m-Y")));
+        $date = $annee->annee->format("d-m-Y");
+        // dump();
         // DateTimeInterface::format();
         $builder
-            ->add('fullname')
-            ->add('dateNaissance')
-            ->add('cne')
-            ->add('sexe')
+            ->add('fullname', TextType::class)
+            ->add('dateNaissance', DateType::class)
+            ->add('cne', TextType::class)
+            ->add('sexe', TextType::class)
             ->add('photo', FileType::class, [
                 'mapped' => false,
                 'required' => false,
@@ -66,12 +70,7 @@ class EleveType extends AbstractType
                 'required' =>true,
                 'label' =>'Choisir une année scolaire',
                 'class' => AnneeScolaire::class,
-                'query_builder' => function (EntityRepository $repo) {
-                    return $repo->createQueryBuilder('a')
-                    ->andWhere('a.annee = :annee')
-                    ->setParameter('annee', date("Y"));
-                },
-                'choice_label' =>'annee',
+                'choice_label' =>'id',
                 'placeholder' => '-- Veuillez choisir une année scolaire --',
                 'constraints' => [
                     new NotBlank([
@@ -82,15 +81,14 @@ class EleveType extends AbstractType
             ->add('service', EntityType::class, [
                 'label' =>'Choisir un service',
                 'class' => Services::class, 
-                'query_builder' => function (EntityRepository $repo) {
-                    $query = $repo->createQueryBuilder('s');
-                    return $query;
-                },
+                // 'query_builder' => function (EntityRepository $repo) use ($options){
+                //     $query = $repo->createQueryBuilder('s');
+                //     return $query;
+                // },
                 'choice_label' =>'name',
                 'multiple' => true,
                 'expanded' => false,
                 'placeholder' =>'--Choisir un service--',
-                'mapped' => false,
             ]);
         ;
     }

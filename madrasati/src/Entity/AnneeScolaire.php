@@ -15,19 +15,18 @@ class AnneeScolaire
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $annee = null;
+    public ?\DateTime $annee = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getAnnee(): ?\DateTimeInterface
+    public function getAnnee(): ?\DateTime
     {
         return $this->annee;
     }
 
-    public function setAnnee(\DateTimeInterface $annee): self
+    public function setAnnee(\DateTime $annee): self
     {
         $this->annee = $annee;
 

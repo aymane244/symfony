@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello NiveauController!{% endblock %}
-{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% form_theme serviceForm 'bootstrap_5_layout.html.twig' %}
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -19,6 +19,10 @@
             </div>
         </div>
     {% endfor %}
-{{form(form)}}
+{{ form_start(serviceForm) }}
+{{ form_row(serviceForm.name) }}
+{{ form_row(serviceForm.prix) }}
+        <button type="submit" class="btn btn-primary">Register</button>
+{{ form_end(serviceForm) }}
 </div>
 {% endblock %}

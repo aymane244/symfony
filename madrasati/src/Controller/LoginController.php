@@ -20,7 +20,7 @@ class LoginController extends AbstractController
         // it might not be accessible yet or lead to unwanted side-effects
         // $this->session = $requestStack->getSession();
     }
-    #[Route('/login', name: 'app_login')]
+    #[Route('/', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one

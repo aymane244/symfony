@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Services;
+use App\Form\ServicesType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,23 +22,15 @@ class ServiceController extends AbstractController
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
         $service = new Services();
-        $service->setName('');
-        $service->setPrix(1);
-        $form = $this->createFormBuilder($service)
-            ->add('name', TextType::class)
-            ->add('prix', NumberType::class)
-            ->add('save', SubmitType::class, [
-                'label'=> 'Créer un service',
-            ])
-            ->getForm();
+        $form = $this->createForm(ServicesType::class, $service);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $entityManager->persist($service);
             $entityManager->flush();       
             $this->addFlash('success', 'Service ajouté avec Succès');
         }
-        return $this->renderForm('service/index.html.twig', [
-            'controller_name' => 'ServiceController',
+        return $this->render('service/index.html.twig', [
+            'serviceForm' => $form->createView(),
             'form' => $form,
             'user' => $user
         ]);

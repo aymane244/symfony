@@ -3,10 +3,10 @@
 {% block title %}Register{% endblock %}
 {% form_theme eleveForm 'bootstrap_5_layout.html.twig' %}
 {% block body %}
-<div class="container mt-5">
     {% include('header.html.twig') %}
+<div class="container mt-5">
     <h1 class="text-center">Eleve</h1>
-
+<div class="text-center"><a href="{{ path('show_eleve') }}" class="btn btn-primary text-decoration-none">Eleve</a></div>
     {{ form_start(eleveForm) }}
     {{ form_row(eleveForm.fullname) }}
         {{ form_row(eleveForm.dateNaissance) }}

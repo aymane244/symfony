@@ -63,4 +63,11 @@ class AnneeScolaireRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function getDocIdQueryBuilder($annee)
+{
+    return $this
+    ->createQueryBuilder('a')
+    ->where('a.annee = :annee')
+    ->setParameter('annee', $annee);
+}
 }

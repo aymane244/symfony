@@ -153,7 +153,7 @@ class Eleve
     }
 
     /**
-     * @return Collection<int, Services>
+     * @return Collection|Services[]
      */
     public function getService(): Collection
     {
@@ -163,6 +163,7 @@ class Eleve
     public function addService(Services $service): self
     {
         if (!$this->service->contains($service)) {
+            $this->service[] = $service;
             $this->service->add($service);
         }
 
@@ -177,6 +178,7 @@ class Eleve
     }
     public function __toString()
     {
-        return  $this->anneeScolaire;
+        return  $this->getAnneeScolaire();
     }
+    // public static DateTime::createFromFormat(string $format, string $datetime, ?DateTimeZone $timezone = null): DateTime|false
 }

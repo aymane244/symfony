@@ -9,6 +9,7 @@ use App\Entity\Parents;
 use App\Entity\Services;
 use App\Form\EleveType;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,8 +37,6 @@ class EleveController extends AbstractController
         $user = $this->getUser();
         $slugger = new AsciiSlugger();
         $eleve = new Eleve();
-        $services = new Services();
-        $services = $doctrine->getRepository(Services:: class)->findAll();
         $form = $this->createForm(EleveType::class, $eleve);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -73,9 +72,12 @@ class EleveController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $eleves = $doctrine->getRepository(Eleve:: class)->findAll();
-        return $this->render('parent/show.html.twig', [
+        $date = date("Y-m-d", strtotime('+1 year'));
+        // dd($eleves);
+        return $this->render('eleve/show.html.twig', [
             'eleves' => $eleves,
-            'user' => $user
+            'user' => $user,
+            'date' => $date
         ]);
     }
 }
